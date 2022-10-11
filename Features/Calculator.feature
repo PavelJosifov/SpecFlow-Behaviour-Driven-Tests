@@ -26,3 +26,9 @@ Scenario: Add two numbers
 	And the second number is 8
 	When the two numbers are multiplied
 	Then the result should be 48
+
+	Scenario: Invalid Input
+	Given the first number is abv
+	And the second number is cde
+	When the two numbers are added
+	Then the result should be invalid input

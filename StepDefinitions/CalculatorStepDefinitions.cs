@@ -83,6 +83,7 @@ namespace SpecFlowProjectAutomatedTests.StepDefinitions
         {
             var result = driver.FindElement(By.CssSelector("#screenNumberCalc > div")).Text;
             result = result.Substring("Result: ".Length);
+            Thread.Sleep(800);
             result.Should().Be(expectedresult);
         }
     }
