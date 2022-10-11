@@ -13,7 +13,12 @@ namespace SpecFlowProjectAutomatedTests.StepDefinitions
     {
 
         public static IWebDriver driver;
-
+        static IWebElement textBox1;
+        static IWebElement textBox2;
+        static SelectElement dropDownOperation;
+        static IWebElement textBox;
+        static IWebElement ResetButton;
+        static IWebElement ButtonCalculate;
         [BeforeFeature]
 
         public static void OpenTheApp()
@@ -23,8 +28,11 @@ namespace SpecFlowProjectAutomatedTests.StepDefinitions
             driver.Navigate().GoToUrl("https://js-calculator.nakov.repl.co/");
             var linkNumberCalc = driver.FindElement(By.CssSelector("body > header > a:nth-child(2)"));
             linkNumberCalc.Click();
-
-
+            textBox1 = driver.FindElement(By.Id("number1"));
+            textBox2 = driver.FindElement(By.Id("number2"));
+            dropDownOperation = new SelectElement(driver.FindElement(By.Id("operation")));
+            ButtonCalculate = driver.FindElement(By.CssSelector("#screenNumberCalc > form > div.buttons-bar > input[type=button]:nth-child(1)"));
+            ResetButton = driver.FindElement(By.CssSelector("#screenNumberCalc > form > div.buttons-bar > input[type=reset]:nth-child(2)"));
         }
 
         [AfterFeature]
@@ -32,35 +40,30 @@ namespace SpecFlowProjectAutomatedTests.StepDefinitions
 
         {
             driver.Quit();
-
         }
 
         [BeforeScenario]
 
-        public static void ResetButton()
+        public static void CalculatorReset()
         {
-
-            var buttonReset = driver.FindElement(By.CssSelector("#screenNumberCalc > form > div.buttons-bar > input[type=reset]:nth-child(2)"));
-            buttonReset.Click();
+            ResetButton.Click();
         }
 
         [Given("the first number is (.*)")]
         public static void GivenTheFirstNumberIs(string firstnum)
         {
-            driver.FindElement(By.Id("number1")).SendKeys(firstnum);
+            textBox1.SendKeys(firstnum);
         }
 
         [Given("the second number is (.*)")]
         public static void GivenTheSecondNumberIs(string secondnum)
         {
-            driver.FindElement(By.Id("number2")).SendKeys(secondnum);
+            textBox2.SendKeys(secondnum);
         }
 
         [When("the two numbers are (.*)")]
         public static void WhenTheTwoNumbersAreAdded(string operation)
-        {
-            var dropDownOperation =
-                new SelectElement(driver.FindElement(By.Id("operation")));
+        { 
             if (operation == "added")
                 dropDownOperation.SelectByValue("+");
             else if (operation == "subtracted")
@@ -71,24 +74,16 @@ namespace SpecFlowProjectAutomatedTests.StepDefinitions
                 dropDownOperation.SelectByValue("*");
             else
                 throw new System.InvalidOperationException($"Operation{operation} not supported by the app");
-            var buttonCalc = driver.FindElement(By.CssSelector("#screenNumberCalc > form > div.buttons-bar > input[type=button]:nth-child(1)"));
-            
 
-            buttonCalc.Click();
-            
-
-
+            ButtonCalculate.Click();
         }
 
         [Then("the result should be (.*)")]
         public void ThenTheResultShouldBe(string expectedresult)
         {
-
             var result = driver.FindElement(By.CssSelector("#screenNumberCalc > div")).Text;
             result = result.Substring("Result: ".Length);
             result.Should().Be(expectedresult);
-            
-            //Assert.AreEqual(expectedresult, result);
         }
     }
 }
