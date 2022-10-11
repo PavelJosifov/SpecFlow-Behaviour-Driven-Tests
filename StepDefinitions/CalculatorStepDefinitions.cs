@@ -1,4 +1,4 @@
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Remote;
@@ -63,18 +63,24 @@ namespace SpecFlowProjectAutomatedTests.StepDefinitions
 
         [When("the two numbers are (.*)")]
         public static void WhenTheTwoNumbersAreAdded(string operation)
-        { 
-            if (operation == "added")
-                dropDownOperation.SelectByValue("+");
-            else if (operation == "subtracted")
-                dropDownOperation.SelectByValue("-");
-            else if (operation == "divided")
-                dropDownOperation.SelectByValue("/");
-            else if (operation == "multiplied")
-                dropDownOperation.SelectByValue("*");
-            else
-                throw new System.InvalidOperationException($"Operation{operation} not supported by the app");
-
+        {
+            switch (operation)
+            {
+                case "added":
+                    dropDownOperation.SelectByValue("+");
+                    break;
+                case "subtracted":
+                    dropDownOperation.SelectByValue("-");
+                    break;
+                case "divided":
+                    dropDownOperation.SelectByValue("/");
+                    break;
+                case "multiplied":
+                    dropDownOperation.SelectByValue("*");
+                    break;
+                default:
+                    throw new InvalidOperationException($"Operation{operation} not supported by the app");
+            }
             ButtonCalculate.Click();
         }
 
