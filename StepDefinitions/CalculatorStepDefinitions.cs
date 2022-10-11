@@ -11,7 +11,7 @@ namespace SpecFlowProjectAutomatedTests.StepDefinitions
     [Binding, Scope(Feature = "Calculator")]
     public class CalculatorStepDefinitions
     {
-
+        private const string SiteUrl = "https://js-calculator.nakov.repl.co/";
         public static IWebDriver driver;
         static IWebElement textBox1;
         static IWebElement textBox2;
@@ -24,8 +24,9 @@ namespace SpecFlowProjectAutomatedTests.StepDefinitions
         public static void OpenTheApp()
 
         {
+
             driver = new ChromeDriver();
-            driver.Navigate().GoToUrl("https://js-calculator.nakov.repl.co/");
+            driver.Navigate().GoToUrl(SiteUrl);
             var linkNumberCalc = driver.FindElement(By.CssSelector("body > header > a:nth-child(2)"));
             linkNumberCalc.Click();
             textBox1 = driver.FindElement(By.Id("number1"));
@@ -79,7 +80,7 @@ namespace SpecFlowProjectAutomatedTests.StepDefinitions
                     dropDownOperation.SelectByValue("*");
                     break;
                 default:
-                    throw new InvalidOperationException($"Operation{operation} not supported by the app");
+                    throw new InvalidOperationException($"Operation {operation} not supported by the app");
             }
             ButtonCalculate.Click();
         }
