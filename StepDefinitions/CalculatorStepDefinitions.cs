@@ -19,12 +19,10 @@ namespace SpecFlowProjectAutomatedTests.StepDefinitions
         static IWebElement textBox;
         static IWebElement ResetButton;
         static IWebElement ButtonCalculate;
+
         [BeforeFeature]
-
         public static void OpenTheApp()
-
         {
-
             driver = new ChromeDriver();
             driver.Navigate().GoToUrl(SiteUrl);
             var linkNumberCalc = driver.FindElement(By.CssSelector("body > header > a:nth-child(2)"));
